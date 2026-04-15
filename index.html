@@ -418,8 +418,9 @@ async function loadBoard() {
   document.getElementById('boardContent').innerHTML = '<div class="spinner">불러오는 중...</div>';
 
   try {
-    const res  = await fetch(SCRIPT_URL);
-    const data = await res.json();
+    const res  = await fetch(SCRIPT_URL, { redirect: 'follow' });
+    const text = await res.text();
+    const data = JSON.parse(text);
 
     if (!data || data.length === 0) {
       document.getElementById('boardContent').innerHTML =
@@ -428,7 +429,8 @@ async function loadBoard() {
       return;
     }
 
-    const sorted = [...data].sort((a, b) => b.score - a.score || a.ts - b.ts);
+    const parseScore = s => parseInt(String(s)) || 0;
+    const sorted = [...data].sort((a, b) => parseScore(b.score) - parseScore(a.score) || Number(a.ts) - Number(b.ts));
     document.getElementById('boardMeta').textContent = `총 ${sorted.length}명 응시`;
 
     const medals = ['🥇','🥈','🥉'];
