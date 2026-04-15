@@ -407,56 +407,76 @@ function retryExam() {
 }
 
 async function loadBoard() {
-  if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyrY_wYKWGkkSf535rYzhsHIcm1hew3SJe7XsjwB0NQL8Z6YkEkmfB59pUcK2V2O1HQiA/exec') {
     document.getElementById('setupBanner').style.display = 'block';
     document.getElementById('boardContent').innerHTML =
       '<div class="board-empty">Apps Script URL을 먼저 설정해주세요.</div>';
-    document.getElementById('boardMeta').textContent = '';
     return;
   }
-  document.getElementById('setupBanner').style.display = 'none';
   document.getElementById('boardContent').innerHTML = '<div class="spinner">불러오는 중...</div>';
 
-  try {
-    const res  = await fetch(SCRIPT_URL, { redirect: 'follow' });
-    const text = await res.text();
-    const data = JSON.parse(text);
+  // 기존 JSONP 스크립트 태그 제거
+  const old = document.getElementById('jsonp-script');
+  if (old) old.remove();
 
-    if (!data || data.length === 0) {
-      document.getElementById('boardContent').innerHTML =
-        '<div class="board-empty">아직 제출된 성적이 없습니다.<br>팀원들이 모의고사를 완료하면 여기에 표시됩니다.</div>';
-      document.getElementById('boardMeta').textContent = '총 0명 응시';
-      return;
-    }
+  const cbName = 'quizCb_' + Date.now();
+  const script = document.createElement('script');
+  script.id = 'jsonp-script';
+  script.src = SCRIPT_URL + '?callback=' + cbName;
 
-    const parseScore = s => parseInt(String(s)) || 0;
-    const sorted = [...data].sort((a, b) => parseScore(b.score) - parseScore(a.score) || Number(a.ts) - Number(b.ts));
-    document.getElementById('boardMeta').textContent = `총 ${sorted.length}명 응시`;
+  window[cbName] = function(data) {
+    delete window[cbName];
+    script.remove();
+    renderBoard(data);
+  };
 
-    const medals = ['🥇','🥈','🥉'];
-    let prevScore = -1, rankIdx = 0;
-    const rows = sorted.map((e, i) => {
-      const scoreNum = typeof e.score === 'string' ? parseInt(e.score) : e.score;
-      if (scoreNum !== prevScore) { rankIdx = i + 1; prevScore = scoreNum; }
-      const gi = getGrade(scoreNum);
-      const rankDisp = rankIdx <= 3
-        ? `<span class="rank-medal">${medals[rankIdx-1]}</span>`
-        : `<span class="rank-num">${rankIdx}위</span>`;
-      return `<tr>
-        <td>${rankDisp}</td>
-        <td class="td-name">${e.name}</td>
-        <td>${e.score}</td>
-        <td class="td-grade" style="color:${gi.color}">${e.grade}</td>
-        <td style="color:#999;font-size:12px">${e.timeStr || ''}</td>
-      </tr>`;
-    }).join('');
+  script.onerror = function() {
+    document.getElementById('boardContent').innerHTML =
+      '<div class="board-empty">데이터를 불러오지 못했습니다.<br>Apps Script URL과 배포 설정을 확인해주세요.</div>';
+    document.getElementById('boardMeta').textContent = '';
+  };
 
-    document.getElementById('boardContent').innerHTML = `
-      <table class="score-table">
-        <thead><tr><th>순위</th><th style="text-align:left">이름</th><th>점수</th><th>등급</th><th>응시 시각</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>`;
-  } catch(e) {
+  document.head.appendChild(script);
+}
+
+function renderBoard(data) {
+  if (!data || data.length === 0) {
+    document.getElementById('boardContent').innerHTML =
+      '<div class="board-empty">아직 제출된 성적이 없습니다.<br>팀원들이 모의고사를 완료하면 여기에 표시됩니다.</div>';
+    document.getElementById('boardMeta').textContent = '총 0명 응시';
+    return;
+  }
+
+  const parseScore = s => parseInt(String(s)) || 0;
+  const sorted = [...data].sort((a, b) =>
+    parseScore(b.score) - parseScore(a.score) || Number(a.ts) - Number(b.ts)
+  );
+  document.getElementById('boardMeta').textContent = `총 ${sorted.length}명 응시`;
+
+  const medals = ['🥇','🥈','🥉'];
+  let prevScore = -1, rankIdx = 0;
+  const rows = sorted.map((e, i) => {
+    const s = parseScore(e.score);
+    if (s !== prevScore) { rankIdx = i + 1; prevScore = s; }
+    const gi = getGrade(s);
+    const rankDisp = rankIdx <= 3
+      ? `<span class="rank-medal">${medals[rankIdx-1]}</span>`
+      : `<span class="rank-num">${rankIdx}위</span>`;
+    return `<tr>
+      <td>${rankDisp}</td>
+      <td class="td-name">${e.name}</td>
+      <td>${e.score}</td>
+      <td class="td-grade" style="color:${gi.color}">${e.grade}</td>
+      <td style="color:#999;font-size:12px">${e.timeStr || ''}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('boardContent').innerHTML = `
+    <table class="score-table">
+      <thead><tr><th>순위</th><th style="text-align:left">이름</th><th>점수</th><th>등급</th><th>응시 시각</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+} catch(e) {
     document.getElementById('boardContent').innerHTML =
       '<div class="board-empty">데이터를 불러오지 못했습니다.<br>Apps Script URL과 배포 설정을 확인해주세요.</div>';
     document.getElementById('boardMeta').textContent = '';
