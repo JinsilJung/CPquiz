@@ -7,183 +7,90 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Noto Sans KR', sans-serif;
-    background: #f5f4f0;
-    color: #1a1a1a;
-    padding: 24px 16px 60px;
-    min-height: 100vh;
-  }
-  .wrap { max-width: 720px; margin: 0 auto; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:#f5f4f0;color:#1a1a1a;padding:24px 16px 60px;min-height:100vh}
+.wrap{max-width:720px;margin:0 auto}
 
-  /* 탭 */
-  .tab-bar { display: flex; border: 2px solid #1a1a1a; border-bottom: none; }
-  .tab-btn {
-    flex: 1; padding: 11px 0;
-    font-family: 'Noto Sans KR', sans-serif; font-size: 13px;
-    font-weight: 700; letter-spacing: 4px;
-    border: none; border-right: 1px solid #1a1a1a;
-    cursor: pointer; background: #fff; color: #888;
-    transition: background .15s, color .15s;
-  }
-  .tab-btn:last-child { border-right: none; }
-  .tab-btn.active { background: #1a1a1a; color: #fff; }
+.tab-bar{display:flex;border:2px solid #1a1a1a;border-bottom:none}
+.tab-btn{flex:1;padding:11px 0;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;letter-spacing:4px;border:none;border-right:1px solid #1a1a1a;cursor:pointer;background:#fff;color:#888;transition:background .15s,color .15s}
+.tab-btn:last-child{border-right:none}
+.tab-btn.active{background:#1a1a1a;color:#fff}
 
-  /* 시험지 */
-  .exam-header { border: 2px solid #1a1a1a; background: #fff; }
-  .title-bar {
-    background: #1a1a1a; color: #fff;
-    text-align: center; padding: 7px 0;
-    font-size: 13px; font-weight: 700; letter-spacing: 5px;
-  }
-  .meta-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .meta-table td { border: 1px solid #1a1a1a; padding: 7px 12px; text-align: center; }
-  .meta-table .lb { font-weight: 700; background: #f5f4f0; width: 70px; }
-  .subject-box {
-    border-left: 2px solid #1a1a1a; border-right: 2px solid #1a1a1a;
-    padding: 11px 16px; text-align: center;
-    font-family: 'Noto Serif KR', serif; font-size: 16px; font-weight: 700;
-    letter-spacing: 3px; border-bottom: 2px solid #1a1a1a; background: #fff;
-  }
-  .exam-body { border: 2px solid #1a1a1a; border-top: none; padding: 24px 28px; background: #fff; }
+.exam-header{border:2px solid #1a1a1a;background:#fff}
+.title-bar{background:#1a1a1a;color:#fff;text-align:center;padding:7px 0;font-size:13px;font-weight:700;letter-spacing:5px}
+.meta-table{width:100%;border-collapse:collapse;font-size:13px}
+.meta-table td{border:1px solid #1a1a1a;padding:7px 12px;text-align:center}
+.meta-table .lb{font-weight:700;background:#f5f4f0;width:70px}
+.subject-box{border-left:2px solid #1a1a1a;border-right:2px solid #1a1a1a;padding:11px 16px;text-align:center;font-family:'Noto Serif KR',serif;font-size:16px;font-weight:700;letter-spacing:3px;border-bottom:2px solid #1a1a1a;background:#fff}
+.exam-body{border:2px solid #1a1a1a;border-top:none;padding:24px 28px;background:#fff}
 
-  /* 이름 */
-  .name-section { margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px dashed #ccc; }
-  .name-label { font-size: 13px; font-weight: 500; color: #555; margin-bottom: 8px; }
-  .name-input {
-    width: 100%; max-width: 280px;
-    padding: 10px 14px; font-family: 'Noto Sans KR', sans-serif;
-    font-size: 14px; border: 1.5px solid #aaa; border-radius: 4px;
-    background: #fff; color: #1a1a1a; outline: none; transition: border-color .15s;
-  }
-  .name-input:focus { border-color: #1a1a1a; }
-  .name-hint { font-size: 11px; color: #999; margin-top: 6px; }
+.name-section{margin-bottom:24px;padding-bottom:20px;border-bottom:1px dashed #ccc}
+.name-label{font-size:13px;font-weight:500;color:#555;margin-bottom:8px}
+.name-input{width:100%;max-width:280px;padding:10px 14px;font-family:'Noto Sans KR',sans-serif;font-size:14px;border:1.5px solid #aaa;border-radius:4px;background:#fff;color:#1a1a1a;outline:none;transition:border-color .15s}
+.name-input:focus{border-color:#1a1a1a}
+.name-hint{font-size:11px;color:#999;margin-top:6px}
 
-  /* 문제 */
-  .q-block { margin-bottom: 28px; }
-  .q-num { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
-  .q-text { font-size: 14px; line-height: 1.78; margin-bottom: 4px; }
-  .q-scene {
-    background: #f5f4f0; border-left: 3px solid #aaa;
-    padding: 11px 14px; font-size: 13px; line-height: 1.72;
-    color: #555; margin: 9px 0 13px; border-radius: 0 4px 4px 0; font-style: italic;
-  }
-  .choices { list-style: none; }
-  .choices li { margin-bottom: 4px; }
-  .choices label {
-    display: flex; align-items: flex-start; gap: 9px;
-    font-size: 13.5px; cursor: pointer;
-    padding: 8px 10px; border-radius: 4px;
-    transition: background .15s; line-height: 1.55;
-  }
-  .choices label:hover { background: #f0efe9; }
-  .choices input[type=radio] { display: none; }
-  .cn {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 23px; height: 23px; min-width: 23px;
-    border: 1.5px solid #1a1a1a; border-radius: 50%;
-    font-size: 12px; font-weight: 700; margin-top: 1px;
-    transition: background .15s, color .15s;
-  }
-  .choices input[type=radio]:checked + label .cn { background: #1a1a1a; color: #fff; }
-  .choices input[type=radio]:checked + label { background: #f0efe9; font-weight: 500; }
-  .divider { border: none; border-top: 1px dashed #ddd; margin: 22px 0; }
+.q-block{margin-bottom:28px}
+.q-num{font-weight:700;font-size:15px;margin-bottom:6px}
+.q-text{font-size:14px;line-height:1.78;margin-bottom:4px}
+.q-scene{background:#f5f4f0;border-left:3px solid #aaa;padding:11px 14px;font-size:13px;line-height:1.72;color:#555;margin:9px 0 13px;border-radius:0 4px 4px 0;font-style:italic}
+.choices{list-style:none}
+.choices li{margin-bottom:4px}
+.choices label{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;cursor:pointer;padding:8px 10px;border-radius:4px;transition:background .15s;line-height:1.55}
+.choices label:hover{background:#f0efe9}
+.choices input[type=radio]{display:none}
+.cn{display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;min-width:23px;border:1.5px solid #1a1a1a;border-radius:50%;font-size:12px;font-weight:700;margin-top:1px;transition:background .15s,color .15s}
+.choices input[type=radio]:checked+label .cn{background:#1a1a1a;color:#fff}
+.choices input[type=radio]:checked+label{background:#f0efe9;font-weight:500}
+.divider{border:none;border-top:1px dashed #ddd;margin:22px 0}
 
-  .submit-btn {
-    display: block; width: 100%; padding: 14px;
-    background: #1a1a1a; color: #fff;
-    font-family: 'Noto Sans KR', sans-serif; font-size: 15px;
-    font-weight: 700; letter-spacing: 8px;
-    border: none; cursor: pointer; margin-top: 18px; transition: opacity .2s;
-  }
-  .submit-btn:hover { opacity: .82; }
-  .submit-btn:disabled { opacity: .45; cursor: not-allowed; }
+.submit-btn{display:block;width:100%;padding:14px;background:#1a1a1a;color:#fff;font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;letter-spacing:8px;border:none;cursor:pointer;margin-top:18px;transition:opacity .2s}
+.submit-btn:hover{opacity:.82}
+.submit-btn:disabled{opacity:.45;cursor:not-allowed}
 
-  /* 결과 */
-  .result-box { border: 2px solid #1a1a1a; margin-top: 18px; display: none; background: #fff; }
-  .result-bar {
-    background: #1a1a1a; color: #fff; text-align: center;
-    padding: 9px; font-size: 14px; font-weight: 700; letter-spacing: 6px;
-  }
-  .result-body { padding: 22px 28px; }
-  .grade-row {
-    text-align: center; margin-bottom: 22px;
-    padding-bottom: 22px; border-bottom: 1px solid #ddd;
-  }
-  .grade-lbl { font-size: 12px; color: #888; margin-bottom: 3px; }
-  .grade-name { font-size: 18px; font-weight: 700; margin-bottom: 14px; }
-  .grade-val { font-family: 'Noto Serif KR', serif; font-size: 52px; font-weight: 700; line-height: 1.1; }
-  .grade-desc { font-size: 13px; color: #666; margin-top: 8px; }
-  .review-item { border: 1px solid #e8e8e8; border-radius: 6px; padding: 13px 15px; margin-bottom: 10px; font-size: 13px; }
-  .review-hd { display: flex; align-items: center; gap: 8px; font-weight: 500; margin-bottom: 4px; }
-  .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 10px; }
-  .badge-ok { background: #e8f0fb; color: #0055cc; }
-  .badge-no { background: #fce8e8; color: #cc2200; }
-  .review-exp { font-size: 12px; color: #666; border-top: 1px solid #eee; margin-top: 9px; padding-top: 9px; line-height: 1.68; }
-  .review-exp strong { font-weight: 500; color: #1a1a1a; }
-  .retry-btn {
-    display: block; width: 100%; padding: 12px;
-    border: 1.5px solid #1a1a1a; background: transparent;
-    font-family: 'Noto Sans KR', sans-serif; font-size: 14px;
-    cursor: pointer; margin-top: 18px; letter-spacing: 4px;
-    transition: background .15s, color .15s;
-  }
-  .retry-btn:hover { background: #1a1a1a; color: #fff; }
+.result-box{border:2px solid #1a1a1a;margin-top:18px;display:none;background:#fff}
+.result-bar{background:#1a1a1a;color:#fff;text-align:center;padding:9px;font-size:14px;font-weight:700;letter-spacing:6px}
+.result-body{padding:22px 28px}
+.grade-row{text-align:center;margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid #ddd}
+.grade-lbl{font-size:12px;color:#888;margin-bottom:3px}
+.grade-name{font-size:18px;font-weight:700;margin-bottom:14px}
+.grade-val{font-family:'Noto Serif KR',serif;font-size:52px;font-weight:700;line-height:1.1}
+.grade-desc{font-size:13px;color:#666;margin-top:8px}
+.review-item{border:1px solid #e8e8e8;border-radius:6px;padding:13px 15px;margin-bottom:10px;font-size:13px}
+.review-hd{display:flex;align-items:center;gap:8px;font-weight:500;margin-bottom:4px}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:10px}
+.badge-ok{background:#e8f0fb;color:#0055cc}
+.badge-no{background:#fce8e8;color:#cc2200}
+.review-exp{font-size:12px;color:#666;border-top:1px solid #eee;margin-top:9px;padding-top:9px;line-height:1.68}
+.review-exp strong{font-weight:500;color:#1a1a1a}
+.retry-btn{display:block;width:100%;padding:12px;border:1.5px solid #1a1a1a;background:transparent;font-family:'Noto Sans KR',sans-serif;font-size:14px;cursor:pointer;margin-top:18px;letter-spacing:4px;transition:background .15s,color .15s}
+.retry-btn:hover{background:#1a1a1a;color:#fff}
 
-  /* 성적표 */
-  .board-wrap { border: 2px solid #1a1a1a; background: #fff; }
-  .board-bar {
-    background: #1a1a1a; color: #fff; text-align: center;
-    padding: 10px; font-size: 14px; font-weight: 700; letter-spacing: 6px;
-  }
-  .board-body { padding: 22px 28px; }
-  .board-meta {
-    font-size: 12px; color: #888; margin-bottom: 16px;
-    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
-  }
-  .btn-row { display: flex; gap: 8px; }
-  .refresh-btn {
-    font-size: 12px; padding: 5px 14px;
-    border: 1px solid #bbb; background: transparent;
-    cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
-    border-radius: 4px; color: #555;
-  }
-  .refresh-btn:hover { background: #f5f4f0; }
-  .score-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .score-table th {
-    border-bottom: 2px solid #1a1a1a; padding: 9px 10px;
-    text-align: center; font-weight: 700; font-size: 12px; color: #555;
-  }
-  .score-table td { border-bottom: 1px solid #eee; padding: 11px 10px; text-align: center; vertical-align: middle; }
-  .score-table tr:last-child td { border-bottom: none; }
-  .score-table tbody tr:hover td { background: #f9f8f4; }
-  .td-name { text-align: left; font-weight: 500; }
-  .td-grade { font-weight: 700; }
-  .rank-medal { font-size: 20px; }
-  .rank-num { font-weight: 700; font-size: 14px; }
-  .board-empty { text-align: center; padding: 50px 20px; color: #999; font-size: 13px; line-height: 1.9; }
-  .spinner { text-align: center; padding: 40px; color: #aaa; font-size: 13px; }
+.board-wrap{border:2px solid #1a1a1a;background:#fff}
+.board-bar{background:#1a1a1a;color:#fff;text-align:center;padding:10px;font-size:14px;font-weight:700;letter-spacing:6px}
+.board-body{padding:22px 28px}
+.board-meta{font-size:12px;color:#888;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.refresh-btn{font-size:12px;padding:5px 14px;border:1px solid #bbb;background:transparent;cursor:pointer;font-family:'Noto Sans KR',sans-serif;border-radius:4px;color:#555}
+.refresh-btn:hover{background:#f5f4f0}
+.score-table{width:100%;border-collapse:collapse;font-size:13px}
+.score-table th{border-bottom:2px solid #1a1a1a;padding:9px 10px;text-align:center;font-weight:700;font-size:12px;color:#555}
+.score-table td{border-bottom:1px solid #eee;padding:11px 10px;text-align:center;vertical-align:middle}
+.score-table tr:last-child td{border-bottom:none}
+.score-table tbody tr:hover td{background:#f9f8f4}
+.td-name{text-align:left;font-weight:500}
+.td-grade{font-weight:700}
+.rank-medal{font-size:20px}
+.rank-num{font-weight:700;font-size:14px}
+.board-empty{text-align:center;padding:50px 20px;color:#999;font-size:13px;line-height:1.9}
+.spinner{text-align:center;padding:40px;color:#aaa;font-size:13px}
 
-  /* 설정 안내 배너 */
-  .setup-banner {
-    background: #fff8e8; border: 1px solid #f0c040;
-    border-radius: 6px; padding: 14px 16px;
-    margin-bottom: 20px; font-size: 13px; line-height: 1.7; color: #6b5200;
-  }
-  .setup-banner strong { font-weight: 700; color: #4a3800; }
-  .setup-banner code {
-    background: #f0e8c0; padding: 1px 6px; border-radius: 3px;
-    font-family: monospace; font-size: 12px; word-break: break-all;
-  }
-
-  @media (max-width: 500px) {
-    body { padding: 12px 10px 48px; }
-    .exam-body, .result-body, .board-body { padding: 18px 16px; }
-    .title-bar { letter-spacing: 2px; font-size: 12px; }
-    .subject-box { font-size: 14px; letter-spacing: 2px; }
-    .meta-table td { padding: 5px 6px; font-size: 11px; }
-  }
+@media(max-width:500px){
+  body{padding:12px 10px 48px}
+  .exam-body,.result-body,.board-body{padding:18px 16px}
+  .title-bar{letter-spacing:2px;font-size:12px}
+  .subject-box{font-size:14px;letter-spacing:2px}
+  .meta-table td{padding:5px 6px;font-size:11px}
+}
 </style>
 </head>
 <body>
@@ -194,7 +101,7 @@
     <button class="tab-btn" onclick="showTab('board')">성 적 표</button>
   </div>
 
-  <!-- ── 모의고사 탭 ── -->
+  <!-- 모의고사 탭 -->
   <div id="tab-quiz">
     <div class="exam-header">
       <div class="title-bar">2025 팀PURPOSE 공정거래 컴플라이언스 모의고사</div>
@@ -212,7 +119,7 @@
       <div class="name-section">
         <div class="name-label">응시자 성명</div>
         <input class="name-input" type="text" id="nameInput" placeholder="이름을 입력하세요" maxlength="10">
-        <div class="name-hint">※ 성적표에 표시될 이름입니다. 실명 또는 닉네임을 입력하세요.</div>
+        <div class="name-hint">※ 성적표에 표시될 이름입니다.</div>
       </div>
 
       <div class="q-block">
@@ -295,27 +202,17 @@
     </div>
   </div>
 
-  <!-- ── 성적표 탭 ── -->
+  <!-- 성적표 탭 -->
   <div id="tab-board" style="display:none">
     <div class="board-wrap">
       <div class="board-bar">성 적 표</div>
       <div class="board-body">
-
-        <!-- ★ Apps Script URL을 아직 입력 안 했을 때 안내 배너 -->
-        <div class="setup-banner" id="setupBanner" style="display:none">
-          ⚠️ <strong>설정 필요</strong> — <code>index.html</code> 상단의
-          <code>SCRIPT_URL</code> 값을 Google Apps Script 배포 URL로 교체하세요.
-          아래 README를 참고하세요.
-        </div>
-
         <div class="board-meta">
-          <span id="boardMeta">불러오는 중...</span>
-          <div class="btn-row">
-            <button class="refresh-btn" onclick="loadBoard()">새로고침</button>
-          </div>
+          <span id="boardMeta"></span>
+          <button class="refresh-btn" onclick="loadBoard()">새로고침</button>
         </div>
-        <div id="boardContent"><div class="spinner">성적 데이터를 불러오는 중입니다...</div></div>
-        <button class="refresh-btn" style="width:100%;margin-top:16px;padding:10px;color:#cc2200;border-color:#ffaaaa" onclick="clearConfirm()">성적 초기화 (전체 삭제)</button>
+        <div id="boardContent"><div class="spinner">불러오는 중...</div></div>
+        <button class="refresh-btn" style="width:100%;margin-top:16px;padding:10px;color:#cc2200;border-color:#ffaaaa" onclick="clearConfirm()">성적 초기화 안내</button>
       </div>
     </div>
   </div>
@@ -323,169 +220,202 @@
 </div>
 
 <script>
-// ★★★ 아래 URL을 Google Apps Script 웹앱 URL로 교체하세요 ★★★
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyrY_wYKWGkkSf535rYzhsHIcm1hew3SJe7XsjwB0NQL8Z6YkEkmfB59pUcK2V2O1HQiA/exec';
-// 예: 'https://script.google.com/macros/s/AKfycb.../exec'
+// ★★★ 여기에 Apps Script 배포 URL을 붙여넣으세요 ★★★
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyrY_wYKWGkkSf535rYzhsHIcm1hew3SJe7XsjwB0NQL8Z6YkEkmfB59pUcK2V2O1HQiA/exec';
 
-// ─────────────────────────────────────────
-const ANSWERS = { q1:3, q2:3, q3:4, q4:2, q5:3 };
-const EXPLANATIONS = [
+// ─── 정답 & 상수 ───────────────────────────────
+var ANSWERS = {q1:3, q2:3, q3:4, q4:2, q5:3};
+
+var EXPLANATIONS = [
   '<strong>정답 ③</strong> — 연구개발 방향 및 사용 소재는 민감한 정보에 해당합니다. ②처럼 "공개된 논문·특허면 괜찮다"는 부분 정답처럼 보이지만, 현재 개발 중인 방향과 소재는 비공개 전략 정보입니다. 학술대회라는 장소가 면죄부가 되지 않습니다.',
-  '<strong>정답 ③</strong> — 개정 공정거래법하에서는 명시적 합의가 없어도 정보를 주고받는 행위 자체만으로 위반이 될 수 있습니다. ①·②·④는 각각 "합의 없음", "가격 아님", "구두라 증거 없음"이라는 흔한 착각입니다. 공정위는 삭제된 메일·파일도 복구해 증거로 활용합니다.',
-  '<strong>정답 ④</strong> — 공동 연구 파트너라도 가격·비용·개발 예산은 민감한 정보입니다. ②는 "예산은 괜찮다"는 함정, ③은 "받기만 하면 된다"는 함정입니다. 정보를 일방적으로 받는 것도 법 위반 소지가 있으며, 반드시 법무담당부서와 공유 범위를 사전 협의해야 합니다.',
-  '<strong>정답 ②</strong> — 협회 회의라도 안건이 공개되지 않은 경쟁사 참석 회의는 사전 안건 확인이 필수입니다. 정부 건의 목적도 예외가 아닙니다.',
-  '<strong>정답 ③</strong> — 적법하게 수집했더라도 출처를 반드시 명시하고, 자사 전략 결정이 독립적 판단임을 별도로 기록해야 합니다. 이 기록이 없으면 내부 문서 자체가 담합 증거로 오해될 수 있습니다.'
+  '<strong>정답 ③</strong> — 개정 공정거래법하에서는 명시적 합의가 없어도 정보를 주고받는 행위 자체만으로 위반이 될 수 있습니다. ①·②·④는 각각 "합의 없음", "가격 아님", "구두라 증거 없음"이라는 흔한 착각입니다.',
+  '<strong>정답 ④</strong> — 공동 연구 파트너라도 가격·비용·개발 예산은 민감한 정보입니다. ②는 "예산은 괜찮다"는 함정, ③은 "받기만 하면 된다"는 함정입니다.',
+  '<strong>정답 ②</strong> — 협회 회의라도 안건이 공개되지 않은 경쟁사 참석 회의는 사전 안건 확인이 필수입니다.',
+  '<strong>정답 ③</strong> — 적법하게 수집했더라도 출처를 반드시 명시하고, 자사 전략 결정이 독립적 판단임을 별도로 기록해야 합니다.'
 ];
-const GRADE_INFO = [
-  { min:5, grade:'1등급', color:'#0055cc', desc:'완벽합니다! 공정거래 리스크 감지 능력 최상위 수준 🏆' },
-  { min:4, grade:'2등급', color:'#0077aa', desc:'우수합니다! 실무 대응에 충분한 수준이에요 👍' },
-  { min:3, grade:'3등급', color:'#447700', desc:'보통 수준. 틀린 문항 해설을 꼭 확인하세요 📚' },
-  { min:1, grade:'4등급', color:'#aa5500', desc:'위험한 선택지를 여러 개 골랐습니다. 해설을 반드시 숙지하세요!' },
-  { min:0, grade:'5등급', color:'#cc2200', desc:'전원 해설 정독 권장합니다 😅' }
-];
-function getGrade(score) { return GRADE_INFO.find(g => score >= g.min); }
 
-function showTab(tab) {
-  document.getElementById('tab-quiz').style.display  = tab === 'quiz'  ? 'block' : 'none';
-  document.getElementById('tab-board').style.display = tab === 'board' ? 'block' : 'none';
-  document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    b.classList.toggle('active', (i===0&&tab==='quiz')||(i===1&&tab==='board'));
-  });
-  if (tab === 'board') loadBoard();
+var GRADE_INFO = [
+  {min:5, grade:'1등급', color:'#0055cc', desc:'완벽합니다! 공정거래 리스크 감지 능력 최상위 수준 🏆'},
+  {min:4, grade:'2등급', color:'#0077aa', desc:'우수합니다! 실무 대응에 충분한 수준이에요 👍'},
+  {min:3, grade:'3등급', color:'#447700', desc:'보통 수준. 틀린 문항 해설을 꼭 확인하세요 📚'},
+  {min:1, grade:'4등급', color:'#aa5500', desc:'위험한 선택지를 여러 개 골랐습니다. 해설을 반드시 숙지하세요!'},
+  {min:0, grade:'5등급', color:'#cc2200', desc:'전원 해설 정독 권장합니다 😅'}
+];
+
+function getGrade(score) {
+  for (var i=0; i<GRADE_INFO.length; i++) {
+    if (score >= GRADE_INFO[i].min) return GRADE_INFO[i];
+  }
+  return GRADE_INFO[GRADE_INFO.length-1];
 }
 
-async function gradeExam() {
-  const name = document.getElementById('nameInput').value.trim();
+// ─── 탭 전환 ───────────────────────────────────
+function showTab(tab) {
+  document.getElementById('tab-quiz').style.display  = tab==='quiz'  ? 'block' : 'none';
+  document.getElementById('tab-board').style.display = tab==='board' ? 'block' : 'none';
+  var btns = document.querySelectorAll('.tab-btn');
+  btns[0].classList.toggle('active', tab==='quiz');
+  btns[1].classList.toggle('active', tab==='board');
+  if (tab==='board') loadBoard();
+}
+
+// ─── 채점 ───────────────────────────────────────
+function gradeExam() {
+  var name = document.getElementById('nameInput').value.trim();
   if (!name) { alert('이름을 입력해주세요.'); document.getElementById('nameInput').focus(); return; }
 
-  let correct = 0;
-  const results = {};
-  ['q1','q2','q3','q4','q5'].forEach((qid) => {
-    const sel = document.querySelector(`input[name="${qid}"]:checked`);
-    const ok  = sel && parseInt(sel.value) === ANSWERS[qid];
+  var correct = 0;
+  var results = {};
+  var qids = ['q1','q2','q3','q4','q5'];
+
+  for (var i=0; i<qids.length; i++) {
+    var qid = qids[i];
+    var sel = document.querySelector('input[name="'+qid+'"]:checked');
+    var ok  = sel && parseInt(sel.value) === ANSWERS[qid];
     if (ok) correct++;
-    results[qid] = { ok, sel: sel ? parseInt(sel.value) : null };
-  });
-
-  const gi = getGrade(correct);
-  document.getElementById('resName').textContent = name;
-  const gv = document.getElementById('gradeVal');
-  gv.textContent = gi.grade; gv.style.color = gi.color;
-  document.getElementById('gradeDesc').textContent = gi.desc + `  (${correct}/5 정답)`;
-
-  document.getElementById('answerReview').innerHTML =
-    Object.entries(results).map(([qid, r], i) => `
-      <div class="review-item">
-        <div class="review-hd">
-          <span>${i+1}번</span>
-          <span class="badge ${r.ok?'badge-ok':'badge-no'}">${r.ok?'정답':r.sel===null?'미선택':'오답'}</span>
-        </div>
-        ${!r.ok ? `<div class="review-exp">${EXPLANATIONS[i]}</div>` : ''}
-      </div>`).join('');
-
-  // Google Sheets에 저장
-  if (SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
-    try {
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',   // CORS 우회 (응답은 못 읽지만 저장은 됨)
-        body: JSON.stringify({ name, score: correct, grade: gi.grade, ts: Date.now() })
-      });
-    } catch(e) { console.log('저장 오류:', e); }
+    results[qid] = {ok:ok, sel: sel ? parseInt(sel.value) : null};
   }
 
-  const rb = document.getElementById('resultBox');
+  var gi = getGrade(correct);
+  document.getElementById('resName').textContent = name;
+  var gv = document.getElementById('gradeVal');
+  gv.textContent = gi.grade;
+  gv.style.color  = gi.color;
+  document.getElementById('gradeDesc').textContent = gi.desc + '  (' + correct + '/5 정답)';
+
+  var html = '';
+  var keys = Object.keys(results);
+  for (var j=0; j<keys.length; j++) {
+    var r = results[keys[j]];
+    var badgeClass = r.ok ? 'badge-ok' : 'badge-no';
+    var badgeText  = r.ok ? '정답' : (r.sel===null ? '미선택' : '오답');
+    html += '<div class="review-item">';
+    html += '<div class="review-hd"><span>'+(j+1)+'번</span><span class="badge '+badgeClass+'">'+badgeText+'</span></div>';
+    if (!r.ok) html += '<div class="review-exp">'+EXPLANATIONS[j]+'</div>';
+    html += '</div>';
+  }
+  document.getElementById('answerReview').innerHTML = html;
+
+  // Sheets 저장
+  if (SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+    try {
+      var btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = '저장 중...';
+
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({name:name, score:correct, grade:gi.grade, ts:Date.now()})
+      }).then(function() {
+        btn.disabled = false;
+        btn.textContent = '채 점 하 기';
+      }).catch(function() {
+        btn.disabled = false;
+        btn.textContent = '채 점 하 기';
+      });
+    } catch(e) {
+      document.getElementById('submitBtn').disabled = false;
+      document.getElementById('submitBtn').textContent = '채 점 하 기';
+    }
+  }
+
+  var rb = document.getElementById('resultBox');
   rb.style.display = 'block';
-  rb.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  rb.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 function retryExam() {
-  document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+  var radios = document.querySelectorAll('input[type=radio]');
+  for (var i=0; i<radios.length; i++) radios[i].checked = false;
   document.getElementById('nameInput').value = '';
   document.getElementById('resultBox').style.display = 'none';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
-async function loadBoard() {
-  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyrY_wYKWGkkSf535rYzhsHIcm1hew3SJe7XsjwB0NQL8Z6YkEkmfB59pUcK2V2O1HQiA/exec') {
-    document.getElementById('setupBanner').style.display = 'block';
+// ─── 성적표 (JSONP) ─────────────────────────────
+function loadBoard() {
+  if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
     document.getElementById('boardContent').innerHTML =
-      '<div class="board-empty">Apps Script URL을 먼저 설정해주세요.</div>';
+      '<div class="board-empty">⚠️ index.html 상단의 SCRIPT_URL을 설정해주세요.</div>';
+    document.getElementById('boardMeta').textContent = '';
     return;
   }
+
   document.getElementById('boardContent').innerHTML = '<div class="spinner">불러오는 중...</div>';
+  document.getElementById('boardMeta').textContent = '';
 
-  // 기존 JSONP 스크립트 태그 제거
-  const old = document.getElementById('jsonp-script');
-  if (old) old.remove();
+  // 이전 JSONP 태그 제거
+  var old = document.getElementById('_jsonp');
+  if (old) old.parentNode.removeChild(old);
 
-  const cbName = 'quizCb_' + Date.now();
-  const script = document.createElement('script');
-  script.id = 'jsonp-script';
-  script.src = SCRIPT_URL + '?callback=' + cbName;
+  var cbName = '_cb' + Date.now();
 
   window[cbName] = function(data) {
-    delete window[cbName];
-    script.remove();
+    try { delete window[cbName]; } catch(e) {}
+    var el = document.getElementById('_jsonp');
+    if (el) el.parentNode.removeChild(el);
     renderBoard(data);
   };
 
-  script.onerror = function() {
+  var s = document.createElement('script');
+  s.id  = '_jsonp';
+  s.src = SCRIPT_URL + '?callback=' + cbName + '&t=' + Date.now();
+  s.onerror = function() {
     document.getElementById('boardContent').innerHTML =
-      '<div class="board-empty">데이터를 불러오지 못했습니다.<br>Apps Script URL과 배포 설정을 확인해주세요.</div>';
+      '<div class="board-empty">불러오기 실패.<br>Apps Script를 <strong>새 버전</strong>으로 재배포했는지 확인해주세요.</div>';
     document.getElementById('boardMeta').textContent = '';
   };
-
-  document.head.appendChild(script);
+  document.head.appendChild(s);
 }
 
 function renderBoard(data) {
-  if (!data || data.length === 0) {
+  if (!data || !data.length) {
     document.getElementById('boardContent').innerHTML =
       '<div class="board-empty">아직 제출된 성적이 없습니다.<br>팀원들이 모의고사를 완료하면 여기에 표시됩니다.</div>';
     document.getElementById('boardMeta').textContent = '총 0명 응시';
     return;
   }
 
-  const parseScore = s => parseInt(String(s)) || 0;
-  const sorted = [...data].sort((a, b) =>
-    parseScore(b.score) - parseScore(a.score) || Number(a.ts) - Number(b.ts)
-  );
-  document.getElementById('boardMeta').textContent = `총 ${sorted.length}명 응시`;
+  function parseScore(s) { return parseInt(String(s)) || 0; }
 
-  const medals = ['🥇','🥈','🥉'];
-  let prevScore = -1, rankIdx = 0;
-  const rows = sorted.map((e, i) => {
-    const s = parseScore(e.score);
-    if (s !== prevScore) { rankIdx = i + 1; prevScore = s; }
-    const gi = getGrade(s);
-    const rankDisp = rankIdx <= 3
-      ? `<span class="rank-medal">${medals[rankIdx-1]}</span>`
-      : `<span class="rank-num">${rankIdx}위</span>`;
-    return `<tr>
-      <td>${rankDisp}</td>
-      <td class="td-name">${e.name}</td>
-      <td>${e.score}</td>
-      <td class="td-grade" style="color:${gi.color}">${e.grade}</td>
-      <td style="color:#999;font-size:12px">${e.timeStr || ''}</td>
-    </tr>`;
-  }).join('');
+  var sorted = data.slice().sort(function(a,b) {
+    return parseScore(b.score) - parseScore(a.score) || Number(a.ts) - Number(b.ts);
+  });
 
-  document.getElementById('boardContent').innerHTML = `
-    <table class="score-table">
-      <thead><tr><th>순위</th><th style="text-align:left">이름</th><th>점수</th><th>등급</th><th>응시 시각</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>`;
-} catch(e) {
-    document.getElementById('boardContent').innerHTML =
-      '<div class="board-empty">데이터를 불러오지 못했습니다.<br>Apps Script URL과 배포 설정을 확인해주세요.</div>';
-    document.getElementById('boardMeta').textContent = '';
+  document.getElementById('boardMeta').textContent = '총 ' + sorted.length + '명 응시';
+
+  var medals = ['🥇','🥈','🥉'];
+  var prevScore = -1, rankIdx = 0;
+  var rows = '';
+
+  for (var i=0; i<sorted.length; i++) {
+    var e  = sorted[i];
+    var sc = parseScore(e.score);
+    if (sc !== prevScore) { rankIdx = i+1; prevScore = sc; }
+    var gi = getGrade(sc);
+    var rankDisp = rankIdx <= 3
+      ? '<span class="rank-medal">'+medals[rankIdx-1]+'</span>'
+      : '<span class="rank-num">'+rankIdx+'위</span>';
+    rows += '<tr>'
+      + '<td>'+rankDisp+'</td>'
+      + '<td class="td-name">'+e.name+'</td>'
+      + '<td>'+e.score+'</td>'
+      + '<td class="td-grade" style="color:'+gi.color+'">'+e.grade+'</td>'
+      + '<td style="color:#999;font-size:12px">'+(e.timeStr||'')+'</td>'
+      + '</tr>';
   }
+
+  document.getElementById('boardContent').innerHTML =
+    '<table class="score-table">'
+    + '<thead><tr><th>순위</th><th style="text-align:left">이름</th><th>점수</th><th>등급</th><th>응시 시각</th></tr></thead>'
+    + '<tbody>'+rows+'</tbody>'
+    + '</table>';
 }
 
 function clearConfirm() {
-  if (confirm('정말 모든 성적을 초기화하시겠습니까?\n(Google Sheets 데이터는 직접 삭제해주세요)'))
-    alert('Google Sheets를 직접 열어서 데이터 행을 선택 삭제해주세요.');
+  alert('성적 초기화는 Google Sheets를 직접 열어서\n데이터 행을 선택 후 삭제해주세요.\n(1행 헤더는 남겨두세요)');
 }
 </script>
 </body>
